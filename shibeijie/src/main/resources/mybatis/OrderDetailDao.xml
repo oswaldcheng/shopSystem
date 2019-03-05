@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shibeijie.demo.dao.OrderDetailDao">
+	
+	<insert id="add" parameterType="OrderDetail">
+		insert into order_detail(order_id,goods_id,orde_number,order_price)
+		values(#{orderId},#{goodsId},#{ordeNumber},#{orderPrice})
+	</insert>
+	
+</mapper>

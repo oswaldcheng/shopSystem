@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shibeijie.demo.dao.ConsigneeManagementMapper">
+	<resultMap type="ConsigneeManagement" id="cmmap">
+		<id column="consignee_id" property="consigneeId"></id>
+		<result column="user_id" property="userId"></result>
+		<result column="consignee_name" property="consigneeName"></result>
+		<result column="consignee_address" property="consigneeAddress"></result>
+		<result column="consignee_code" property="consigneeCode"></result>
+		<result column="consignee_phone" property="consigneePhone"></result>
+	</resultMap>
+	
+	<select id="getCMList" parameterType="ConsigneeManagement" resultMap="cmmap">
+		select * from consignee_management
+		<where>
+			<if test="userId != null and userId != ''">
+				and user_id = #{userId}
+			</if>
+		</where>
+	</select>
+	
+	
+</mapper>

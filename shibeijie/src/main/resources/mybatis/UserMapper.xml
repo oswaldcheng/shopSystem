@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shibeijie.demo.dao.UserInfoMapper">
+
+
+	<resultMap type="UserInfo" id="usermap">
+	<id column="user_id" property="userId"></id>
+	<result column="user_name" property="userName"></result>
+	<result column="user_sex" property="userSex"></result>
+	<result column="user_phone" property="userPhone"></result>
+	<result column="user_pw" property="userPw"></result>
+	<result column="user_type" property="userType"></result> 	
+	</resultMap>
+	
+	
+	<select id="getUserInfoList" parameterType="UserInfo" resultMap="usermap">
+		select * from user_info
+		<where>
+			<if test="userName != null and userName != ''">
+				<bind name="namePattern" value="'%' + _parameter.userName + '%'"></bind>
+				and user_name like #{namePattern}
+			</if>
+			<if test="userPhone != null and userPhone != ''">
+				<bind name="phonePattern" value="'%' + _parameter.userPhone + '%'"></bind>
+				and user_phone like #{phonePattern}
+			</if>
+		</where>
+		<if test="start != -1 and length != -1">
+			limit #{start},#{length}
+		</if>
+	</select>
+	
+	<select id="getUserInfoCount" parameterType="UserInfo" resultType="long">
+		select count(*) from user_info
+		<where>
+			<if test="userName != null and userName != ''">
+				<bind name="namePattern" value="'%' + _parameter.userName + '%'"></bind>
+				and user_name like #{namePattern}
+			</if>
+			<if test="userPhone != null and userPhone != ''">
+				<bind name="phonePattern" value="'%' + _parameter.userPhone + '%'"></bind>
+				and user_phone like #{phonePattern}
+			</if>
+		</where>
+	</select>
+	
+	<select id="getUserInfo" parameterType="UserInfo" resultMap="usermap">
+		select * from user_info
+		<where>
+			<if test="userId != null and userId != ''">
+				and user_id = #{userId}
+			</if>
+			<if test="userPhone != null and userPhone != ''">
+				and user_phone = #{userPhone}
+			</if>
+			<if test="userPw != null and userPw != ''">
+				and user_pw = #{userPw}
+			</if>
+		</where>
+	</select>
+	
+
+	<insert id="addUserInfo" parameterType="UserInfo">
+		insert into user_info(user_name,user_sex,user_phone,user_pw,user_type) 
+		values(#{userName},#{userSex},#{userPhone},#{userPw},#{userType})
+	</insert>
+	
+	<update id="updateUserInfo" parameterType="UserInfo">
+		update user_info
+		<set>
+			<if test="userName != null and userName != ''">
+				user_name = #{userName},
+			</if>
+			<if test="userSex != null and userSex != ''">
+				user_sex = #{userSex},
+			</if>
+			<if test="userPhone != null and userPhone != ''">
+				user_phone = #{userPhone},
+			</if>
+			<if test="userPw != null and userPw != ''">
+				user_pw = #{userPw},
+			</if>
+			<if test="userType != null and userType != ''">
+				user_type = #{userType},
+			</if>
+		</set>
+		where user_id = #{userId}
+	</update>
+	
+	<delete id="deleteUserInfo" parameterType="UserInfo">
+		delete from user_info where user_id = #{userId}
+	</delete>
+	
+
+</mapper>

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>用户管理-用户修改</title>
+<link href="/resource/css/bootstrap.min.css" rel="stylesheet" />
+<script type="text/javascript" src="/resource/js/jquery.min.js"></script>
+<script type="text/javascript"
+		src="/resource/js/bootstrap.min.js"></script>
+<link href="/resource/css/jquery.validator.css" rel="stylesheet">
+    <script src="/resource/js/jquery.validator.js"></script>
+    <script src="/resource/js/zh_CN.js"></script>
+</head>
+<body>
+<div>
+	<ul class="breadcrumb" style="margin: 0px;">
+		<li>系统管理</li>
+		<li>用户管理</li>
+		<li>用户修改</li>
+	</ul>
+</div>
+<form action="/back/userinfo/update" method="post" class="form-horizontal" data-validator-option="{stopOnError:false, timely:true,theme:'yellow_right_effect'}">
+	<h5 class="page-header alert-info"
+		style="margin: 0px; padding: 10px; margin-bottom: 10px;">基本信息</h5>
+		<input type="hidden" name="userId" value="${userinfo.userId?c}"> 
+	<!-- 开始1 -->
+	<div class="row">
+		<div class="col-xs-5">
+			<div class="form-group ">
+				<label class="col-xs-3 control-label">用户姓名</label>
+				<div class="col-xs-9 ">
+					<input
+					data-rule="用户姓名:required;length[6~10]"
+					 type="text" name="userName" value="${(userinfo.userName)!}" class="form-control" placeholder="请输入用户姓名" />
+				</div>
+			</div>
+		</div>
+		<div class="col-xs-5">
+			<div class="form-group ">
+				<label class="col-xs-3 control-label">用户类型</label>
+				<div class="col-xs-9 ">
+					<select name="userType" class="form-control">
+						<option value="1" ${(((userinfo.userType)!) == '1') ? string('selected','')}>卖家</option>
+						<option value="2" ${(((userinfo.userType)!) == '2') ? string('selected','')}>买家</option>
+					</select>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--结束1 -->
+	<!-- 开始2 -->
+	<div class="row">
+		<div class="col-xs-5">
+			<div class="form-group ">
+				<label class="col-xs-3 control-label">用户性别</label>
+				<div class="col-xs-9 ">
+					<select class="form-control" name="userSex">
+						<option value="2" ${(((userinfo.userSex)!) == '2') ? string('selected','')}>保密</option>
+						<option value="1" ${(((userinfo.userSex)!) == '1') ? string('selected','')}>男</option>
+						<option value="0" ${(((userinfo.userSex)!) == '0') ? string('selected','')}>女</option>
+					</select>
+				</div>
+			</div>
+		</div>
+
+	</div>
+	<!--结束2 -->
+
+
+	<h5 class="page-header alert-info"
+		style="margin: 0px; padding: 10px; margin-bottom: 10px;">账号信息
+		<span id="mes"></span>
+		</h5>
+	<!-- 开始5 -->
+	<div class="row">
+		<div class="col-xs-5">
+			<div class="form-group ">
+				<label class="col-xs-3 control-label">用户账号</label>
+				<div class="col-xs-9">
+					<input id="userPhone" readonly="readonly"
+					data-rule="用户账号:required;length[6~10]"
+					 type="text" name="userPhone" value="${(userinfo.userPhone)!}" class="form-control" placeholder="请输入用户账号" />
+				</div>
+			</div>
+		</div>
+		<div class="col-xs-5">
+			<div class="form-group ">
+				<label class="col-xs-3 control-label">用户密码</label>
+				<div class="col-xs-9 ">
+					<input
+					data-rule="用户密码:required;length[6~10]"
+					 type="text" name="userPw" value="${(userinfo.userPw)!}" class="form-control" placeholder="请输入用户密码" />
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--结束5 -->
+
+	<div class="row">
+		<div class="col-xs-3 col-xs-offset-4">
+			<input type="submit" class="btn btn-success" value="保存用户" /> 
+			<input type="reset" class="btn btn-danger" value="重置信息" />
+		</div>
+
+	</div>
+
+</form>
+
+<script type="text/javascript">
+	$(function(){
+		$("#userPhone").blur(function(){
+			$.post(
+				"/back/userinfo/validatephone",
+				{
+					userPhone:$(this).val()
+				},
+				function(e){
+					$("#mes").html(e);
+				}
+			);
+		});
+	});
+</script>
+</body>
+</html>

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>购物车</title>
+<link rel="stylesheet" href="/css/bootstrap.css">
+<link rel="stylesheet" href="/css/animate.min.css">
+<link rel="stylesheet" href="/css/main.css">
+<script type="text/javascript" src="/js/jquery.min.js"></script>
+</head>
+<body>
+	
+	<#include "/front/navigator.html"><!-- 引入 -->
+	
+	
+	<section id="nav">
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-1"></div>
+				<div class="col-sm-3">
+					<a class="btn btn-primary">第一步 我的购物车</a>
+				</div>
+				<div class="col-sm-3">
+					<a class="btn btn-default">第二步 填写核对订单信息</a>
+				</div>
+				<div class="col-sm-3">
+					<a class="btn btn-default">第三步 成功提交订单</a>
+				</div>
+				<div class="col-sm-1"></div>
+			</div>
+		</div>
+	</section>
+	<hr />
+	<!-- ${Session.cart?keys?size}-->
+	<form action="/admin/ordercheck" id="cartform" method="post" onsubmit="return submitForm()">
+		<section id="shoppingcart">
+			<div class="container">
+				<table class="table">
+					<tr>
+						<th width="6%">全选 &nbsp;<input type="checkbox" checked class="checkAll"/></th>
+						<th width="50%">商品</th>
+						<th>单价（元）</th>
+						<th>数量</th>
+						<th>小计</th>
+						<th>操作</th>
+					</tr>
+					
+					<#if cart??>
+						<#list cart?keys as key>	
+							<tr>
+								<td><input type="checkbox" class="check" checked onchange="calcTotal()" name="keys" value="${(key)!}"/></td>
+								<td><a href="/goodsinfo/${(cart[key].goodsId)!}"> <img style="width:50px;height:75px;object-fit:contain" 
+								src="${(cart[key].goodsUrl)!}">${(cart[key].goodsName)!}
+								</a></td>
+								<td>${(cart[key].goodsPrice)!}</td>
+								<td><input type="text" name="number" class="number" value="1" onchange="everyTotal('${cart[key].goodsPrice}',this.value,${cart[key].goodsId})"></td>
+								<td><span class="total" id="total${cart[key].goodsId}">${(cart[key].goodsPrice)!}</span></td>
+								<td><a href="/cart/delete?keys=${(key)!}">删除</a></td>
+							</tr>
+						</#list>
+						<#if cart?keys?size == 0>
+							<tr>
+								<td colspan="6">购物车是空的，<a href="/index">去看看</a></td>
+							</tr>
+						</#if>
+						<#else>
+							<tr>
+								<td colspan="6">购物车是空的，<a href="/index">去看看</a></td>
+							</tr>
+					</#if>
+
+				</table>
+				<hr />
+				<div class="footer">
+					<div class="row">
+						<div class="col-sm-6">
+							全选 &nbsp;<input type="checkbox" checked class="checkAll"/> <a href="javascript:void(0)" onclick="del()">删除选中商品</a>
+						</div>
+						<div class="col-sm-6" align="right">
+							已选中<span style="color: red;" id="numbers">3</span>件商品 &nbsp; 总价：<span
+								class="price" id="price">￥2994</span> <input type="submit"
+								class="btn btn-danger" value="去结算">
+						</div>
+					</div>
+
+				</div>
+				<hr />
+			</div>
+
+		</section>
+	</form>
+
+
+
+	<footer>
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-12">
+					<p>版权所有：拾贝街</p>
+				</div>
+			</div>
+		</div>
+	</footer>
+	
+	<script type="text/javascript">
+		//计算每一行小计
+		function everyTotal(price,num,id){
+			var tol = "#total" + id;
+			$(tol).html(price * num);
+			calcTotal();
+		}
+		
+		//计算总价
+		function calcTotal(){
+			var sum = 0 ;
+			var index = 0;
+			$("input[type='checkbox'][class='check']:checked").each(function(){
+				sum += parseFloat($(this).parent().parent().find("span[class='total']")[0].innerHTML);
+				index += parseInt($(this).parent().parent().find("input[type='text'][class='number']")[0].value);
+			});
+			$("#price").html(sum);
+			$("#numbers").html(index);
+		}
+		
+		calcTotal();//一开始便计算一次
+		
+		//全选、全不选
+		$(".checkAll").click(function(){
+			if(this.checked == true){
+				$("[type=checkbox]").prop('checked',true);
+			}else{
+				$("[type=checkbox]").prop('checked',false);
+			}
+			calcTotal()
+		});
+		
+		//删除选中
+		function del(){
+			var form = document.getElementById("cartform");
+			form.action = "/cart/delete";
+			form.submit();
+		}
+		
+		//防止提交多余数据
+		function submitForm(){
+			$("input[type=checkbox][class=check]:not(:checked)").each(function(){
+				$(this).attr("disabled",true);
+				$(this).parent().parent().find("input[type='text']").attr("disabled",true);
+			});
+			return true;
+		}
+	</script>
+	
+</body>
+</html>

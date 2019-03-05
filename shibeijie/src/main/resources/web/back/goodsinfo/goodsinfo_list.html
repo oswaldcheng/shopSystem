@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>商品管理-商品查询</title>
+<link href="/resource/css/bootstrap.min.css" rel="stylesheet" />
+<script type="text/javascript" src="/resource/js/jquery.min.js"></script>
+<script type="text/javascript"
+	src="/resource/js/bootstrap.min.js"></script>
+</head>
+<body>
+	<div>
+		<ul class="breadcrumb" style="margin: 0px;">
+			<li>系统管理</li>
+			<li>商品管理</li>
+			<li>商品查询</li>
+		</ul>
+	</div>
+	<form action="/back/goodsinfo/list" class="form-inline">
+		<div class="row alert alert-info" style="margin: 0px; padding: 5px;">
+			<div class="form-group">
+				<input type="hidden" name="page" value="1">
+				<input type="text" name="goodsName" class="form-control" placeholder="请输入商品名称" />
+				<label>商品状态:</label> <select name="goodsState" class="form-control">
+					<option value="">---------</option>
+					<option value="1">初始</option>
+					<option value="2">上架</option>
+					<option value="3">下架</option>
+				</select> 
+			</div>
+			<input type="submit" class="btn btn-danger" value="查询"> 
+			
+		</div>
+		<div class="row" style="padding: 15px;">
+			<table class="table table-hover table-condensed">
+				<tr>
+					<th>商品编号</th>
+					<th>商品简介</th>
+					<th>商品价格</th>
+					<th>商品状态</th>
+					<th>操作</th>
+				</tr>
+				<#list (pageBean.list)! as g>
+					<tr>
+						<td>${(g.goodsId)!}</td>
+						<td><img src="${(g.goodsUrl)!}" style="width:77px;height:66px;object-fit:contain">${(g.goodsName)!}</td>
+						<td>${(g.goodsPrice)!}</td>
+						<td>
+						<#if g.goodsState??>
+							<#if g.goodsState == '1'>
+								初始化
+							</#if>
+							<#if g.goodsState == '2'>
+								上架
+							</#if>
+							<#if g.goodsState == '3'>
+								下架
+							</#if>
+						</#if>
+						</td>
+						<td><a href="/back/goodsinfo/loadupdate?goodsId=${(g.goodsId)!?c}">修改</a> 
+						<#if g.goodsState == '1'>
+								<a href="/back/goodsinfo/upgoods?goodsId=${(g.goodsId)!?c}">上架</a>
+						</#if>
+						<#if g.goodsState == '3'>
+								<a href="/back/goodsinfo/upgoods?goodsId=${(g.goodsId)!?c}">上架</a>
+						</#if>
+						<#if g.goodsState == '2'>
+								<a href="/back/goodsinfo/downgoods?goodsId=${(g.goodsId)!?c}">下架</a>
+							</#if>
+					</tr>
+				</#list>
+			</table>
+			共有${pageBean.allRow}条记录，当前是第${pageBean.currentPage}/${pageBean.totalPage}页
+			<nav aria-label="...">
+				<ul class="pager">
+				<#if pageBean.currentPage == 1>
+					第一页 上一页
+				<#else>
+					<li><a href="/back/goodsinfo/list?page=1&goodsName=${(goodsinfo.goodsName)!}&goodsState=${(goodsinfo.goodsState)!}">第一页</a></li>
+					<li><a href="/back/goodsinfo/list?page=${pageBean.currentPage - 1}&goodsName=${(goodsinfo.goodsName)!}&goodsState=${(goodsinfo.goodsState)!}">上一页</a></li>
+				</#if>
+				
+				<#if pageBean.currentPage == pageBean.totalPage>
+					下一页 最末页
+				<#else>
+					<li><a href="/back/goodsinfo/list?page=${pageBean.currentPage + 1}&goodsName=${(goodsinfo.goodsName)!}&goodsState=${(goodsinfo.goodsState)!}">下一页</a></li>
+					<li><a href="/back/goodsinfo/list?page=${pageBean.totalPage}&goodsName=${(goodsinfo.goodsName)!}&goodsState=${(goodsinfo.goodsState)!}">最末页</a></li>
+				</#if>
+				</ul>
+			</nav>
+		</div>
+	</form>
+	
+	<script type="text/javascript">
+		function del(id){
+			if(confirm("确定删除该商品？")){
+				window.location.href="/back/userinfo/delete?userId="+id;
+			}
+		}
+	</script>
+</body>
+</html>

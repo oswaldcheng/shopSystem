@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>用户管理-用户查询</title>
+<link href="/resource/css/bootstrap.min.css" rel="stylesheet" />
+<script type="text/javascript" src="/resource/js/jquery.min.js"></script>
+<script type="text/javascript"
+	src="/resource/js/bootstrap.min.js"></script>
+</head>
+<body>
+	<div>
+		<ul class="breadcrumb" style="margin: 0px;">
+			<li>系统管理</li>
+			<li>用户管理</li>
+			<li>用户查询</li>
+		</ul>
+	</div>
+	<form action="/back/userinfo/list" class="form-inline">
+		<div class="row alert alert-info" style="margin: 0px; padding: 5px;">
+			<div class="form-group">
+				<input type="hidden" name="page" value="1">
+				<input type="text" name="userName" class="form-control" placeholder="请输入查询姓名" />
+				<input type="text" name="userPhone" class="form-control" placeholder="请输入查询账号" />
+			</div>
+			<input type="submit" class="btn btn-danger" value="查询"> <a
+				href="/back/userinfo/loadadd" class="btn btn-success">添加用户</a>
+			
+			<!-- Button trigger modal  bootstrap组件 -->
+			<button type="button" class="btn btn-primary"
+				data-toggle="modal" data-target="#myModal">批量添加用户</button>
+				
+			<a href="/back/userinfo/exportusers?userName=${(userInfo.userName)!}&userPhone=${(userInfo.userPhone)!}" class="btn btn-warning">导出查询结果</a>
+
+			
+		</div>
+		<div class="row" style="padding: 15px;">
+			<table class="table table-hover table-condensed">
+				<tr>
+					<th>用户编号</th>
+					<th>用户姓名</th>
+					<th>用户性别</th>
+					<th>用户账号</th>
+					<th>用户密码</th>
+					<th>操作</th>
+				</tr>
+				<#list (pageBean.list)! as u>
+					<tr>
+						<td>${(u.userId)!}</td>
+						<td>${(u.userName)!}</td>
+						<td>${(u.userSex)!}</td>
+						<td>${(u.userPhone)!}</td>
+						<td>${(u.userPw)!}</td>
+						<td><a href="javascript:void(0)" onclick="upd('${(u.userId)!?c}')">修改</a>
+						<a href="javascript:void(0)" onclick="del('${(u.userId)!?c}')">删除</a></td>
+					</tr>
+				</#list>
+				
+			</table>
+			共有${pageBean.allRow}条记录，当前是第${pageBean.currentPage}/${pageBean.totalPage}页
+			<nav aria-label="...">
+				<ul class="pager">
+				<#if pageBean.currentPage == 1>
+					第一页 上一页
+				<#else>
+					<li><a href="/back/userinfo/list?page=1&userName=${(userInfo.userName)!}&userPhone=${(userInfo.userPhone)!}">第一页</a></li>
+					<li><a href="/back/userinfo/list?page=${pageBean.currentPage - 1}&userName=${(userInfo.userName)!}&userPhone=${(userInfo.userPhone)!}">上一页</a></li>
+				</#if>
+				
+				<#if pageBean.currentPage == pageBean.totalPage>
+					下一页 最末页
+				<#else>
+					<li><a href="/back/userinfo/list?page=${pageBean.currentPage + 1}&userName=${(userInfo.userName)!}&userPhone=${(userInfo.userPhone)!}">下一页</a></li>
+					<li><a href="/back/userinfo/list?page=${pageBean.totalPage}&userName=${(userInfo.userName)!}&userPhone=${(userInfo.userPhone)!}">最末页</a></li>
+				</#if>
+				</ul>
+			</nav>
+		</div>
+	</form>
+	
+	
+	<!--批量添加用户的模态框 Modal -->
+	<form action="/back/userinfo/importusers" method="post" enctype="multipart/form-data">
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title" id="myModalLabel">请选择excel文件</h4>
+				</div>
+				<div class="modal-body">
+					<input type="file" name="users" class="form-control">
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+					<button type="submit" class="btn btn-primary">上传</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	</form>
+	
+	<script type="text/javascript">
+		function del(id){
+			if(confirm("确定删除该用户？")){
+				//id = id.replace(/,/g,'');
+				alert(id);
+				window.location.href="/back/userinfo/delete?userId="+id;
+			}
+		}
+	</script>
+	<script type="text/javascript">
+	function upd(id){
+		//id = id.replace(/,/g,'');
+		alert(id);
+		window.location.href="/back/userinfo/loadupdate?userId="+id	
+	}
+	</script>
+</body>
+</html>

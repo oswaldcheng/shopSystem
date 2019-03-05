@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>商品详情</title>
+<link rel="stylesheet" href="/css/bootstrap.css">
+<link rel="stylesheet" href="/css/animate.min.css">
+<link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+	<#include "/front/navigator.html">
+
+	<section id="goodsinfo">
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-6">
+					<img alt="" style="width:200px;height:300px;object-fit:contain" src="${(g.goodsUrl)!}">
+				</div>
+				<div class="col-sm-6">
+					<h1>${(g.goodsName)!}</h1>
+					<p class="desc">${(g.goodsIntro)!}</p>
+					<hr />
+					<p class="price">￥${(g.goodsPrice)!}</p>
+					<hr />
+					<a class="btn btn-warning btn-lg" href="/cart/${(g.goodsId)!}">加入购物车</a><a
+						class="btn btn-success btn-lg">直接购买</a>
+				</div>
+			</div>
+		</div>
+	</section>
+	<section id="goodsdesc">
+		<hr />
+		<p class="title">详情描述</p>
+		<hr />
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-12">
+					${(g.goodsDesc)!}
+				</div>
+			</div>
+		</div>
+	</section>
+	<section id="contact">
+		<div class="bg">
+			<div class="container">
+				<div class="row ">
+					<div class="col-sm-6  wow fadeInLeft">
+						<h2>
+							<span class="glyphicon glyphicon-earphone"></span> 联系我们
+						</h2>
+						<p>
+							拾贝街</p>
+						<address>
+							<p>
+								<span class="glyphicon glyphicon-home"></span>
+								盐城市XXXXX街XXX路XXX大厦xx
+							</p>
+							<p>
+								<span class="glyphicon glyphicon-phone-alt"></span>
+								联系电话：xxxxxx
+							</p>
+							<p>
+								<span class="glyphicon glyphicon-envelope"></span>
+								电子邮件：123456@163.com
+							</p>
+						</address>
+
+					</div>
+					<div class="col-sm-6  wow fadeInRight">
+						<form method="post">
+							<div class="col-md-6">
+								<input type="text" class="form-control" placeholder="请输入您的姓名">
+							</div>
+							<div class="col-md-6">
+								<input type="text" class="form-control" placeholder="请输入您的电子邮件">
+							</div>
+							<div class="col-md-12">
+								<input type="text" class="form-control" placeholder="标题">
+							</div>
+							<div class="col-md-12">
+								<textarea placeholder="留言内容" rows="4" class="form-control"></textarea>
+							</div>
+							<div class="col-md-8">
+								<input type="submit" value="提交信息" class="form-control">
+							</div>
+						</form>
+
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<footer>
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-12">
+					<p>版权所有：拾贝街</p>
+				</div>
+			</div>
+		</div>
+	</footer>
+</body>
+</html>

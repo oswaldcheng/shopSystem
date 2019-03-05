@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shibeijie.demo.dao.OrderManagementDao">
+	
+	<insert id="addOrder" parameterType="OrderManagement" useGeneratedKeys="true" keyProperty="orderId">
+		insert into order_management(user_id,consignee_id,order_time,order_total,order_state)
+		values(#{userId},#{consigneeId},#{orderTime},#{orderTotal},#{orderState})
+	</insert>
+	
+</mapper>
